@@ -1,10 +1,400 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Dashboard</title>
+  <meta charset="UTF-8" />
+  <title> Personal Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --bg-soft: #1e293b;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --text: #e5e7eb;
+      --text-muted: #9ca3af;
+      --card-radius: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(135deg, rgba(148, 163, 184, 0.09), rgba(15, 23, 42, 0.9));
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    header {
+      padding: 24px 28px 16px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title-block h1 {
+      font-size: clamp(1.6rem, 2.4vw, 2rem);
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .title-block p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #e0f2fe;
+      white-space: nowrap;
+    }
+
+    .tagline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    main {
+      padding: 20px 24px 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .intro-card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.9));
+      border-radius: var(--card-radius);
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .intro-card h2 {
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+
+    .intro-card p {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .hobby-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-button {
+      cursor: pointer;
+      font-size: 0.88rem;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text-muted);
+      transition: all 0.15s ease-out;
+    }
+
+    .tab-button:hover {
+      border-color: rgba(148, 163, 184, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .tab-button.active {
+      background: var(--accent-soft);
+      color: #e0f2fe;
+      border-color: rgba(56, 189, 248, 0.9);
+    }
+
+    .hobby-card {
+      margin-top: 4px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: var(--card-radius);
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      min-height: 170px;
+    }
+
+    .hobby-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .hobby-subtitle {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .hobby-list {
+      list-style: none;
+      font-size: 0.9rem;
+    }
+
+    .hobby-list li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 5px;
+    }
+
+    .hobby-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .side-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: var(--card-radius);
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .side-card h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .mini-list {
+      list-style: none;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .mini-list li {
+      margin-bottom: 4px;
+    }
+
+    footer {
+      padding: 10px 24px 16px;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: #7dd3fc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to my site</h1>
-  <p>This is accessible from anywhere.</p>
+  <div class="shell">
+    <header>
+      <div class="title-block">
+        <h1> Hobbies & Curiosities</h1>
+        <p>Rock climbing, travel, history, and video games — the things that keep life interesting.</p>
+      </div>
+      <div class="tagline">
+        <span class="tagline-dot"></span>
+        Exploring one route, one story, one world at a time
+      </div>
+    </header>
+
+    <main>
+      <section class="intro-card">
+        <h2>About This Page</h2>
+        <p>
+          This is a small personal corner of the internet to collect the hobbies that matter most to me right now
+          and how I like to approach them.
+        </p>
+        <div class="chips">
+          <span class="chip">🧗 Rock Climbing</span>
+          <span class="chip">✈️ Travel</span>
+          <span class="chip">📜 History</span>
+          <span class="chip">🎮 Video Games</span>
+        </div>
+      </section>
+
+      <aside class="side-card">
+        <h3>Currently Into</h3>
+        <ul class="mini-list">
+          <li>• Chasing good views & good routes</li>
+          <li>• Finding stories behind places</li>
+          <li>• Games with strong worlds & mechanics</li>
+        </ul>
+
+        <h3>What This Isn’t</h3>
+        <ul class="mini-list">
+          <li>• Not a portfolio</li>
+          <li>• Not social media</li>
+          <li>• Just a simple personal page</li>
+        </ul>
+      </aside>
+
+      <section class="hobby-layout" style="grid-column: 1 / -1;">
+        <div class="tabs">
+          <button class="tab-button active" data-hobby="climb">🧗 Rock Climbing</button>
+          <button class="tab-button" data-hobby="travel">✈️ Travel</button>
+          <button class="tab-button" data-hobby="history">📜 History</button>
+          <button class="tab-button" data-hobby="games">🎮 Video Games</button>
+        </div>
+
+        <div class="hobby-card" id="hobby-content">
+          <!-- Filled by JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="year"></span> Host</span>
+      <span>Hosted with <a href="https://pages.github.com/" target="_blank" rel="noreferrer">GitHub Pages</a></span>
+    </footer>
+  </div>
+
+  <script>
+    const hobbies = {
+      climb: {
+        title: "Rock Climbing",
+        subtitle: "Problem solving + exposure therapy for the legs.",
+        points: [
+          "Enjoys outdoor routes with good views more than just chasing grades.",
+          "Likes routes that feel like puzzles: balance, footwork, and sequencing.",
+          "Tends to remember climbs by how they felt, not just the difficulty.",
+          "Values partners who are safe, patient, and good at bad jokes between attempts."
+        ]
+      },
+      travel: {
+        title: "Travel",
+        subtitle: "Slow travel, good food, and learning how places actually work.",
+        points: [
+          "Prefers a smaller number of places with more time in each over rush-through-it itineraries.",
+          "Enjoys mixing city days (museums, neighborhoods) with day hikes or small excursions.",
+          "Loves asking: “How do people really live here?” instead of ticking off only major attractions.",
+          "Keeps loose notes on favorite cafés, views, and local quirks to revisit or share later."
+        ]
+      },
+      history: {
+        title: "History",
+        subtitle: "Not just dates — how people and systems shape each other.",
+        points: [
+          "Interested in how everyday life changed across different eras, not just battles and kings.",
+          "Likes connecting what’s in museums or ruins to what’s happening in the present.",
+          "Enjoys deep dives into specific topics instead of trying to cover everything at once.",
+          "Uses travel as an excuse to dig into the local and regional history on the ground."
+        ]
+      },
+      games: {
+        title: "Video Games",
+        subtitle: "World-building, good systems, and the right amount of challenge.",
+        points: [
+          "Enjoys games that reward experimentation, planning, or creative problem solving.",
+          "Likes having a mix of cozy/low-stress games and more intense, skill-based ones.",
+          "Pays attention to soundtracks and art direction as much as raw mechanics.",
+          "Uses games as a way to unwind, but also as another way to explore stories and worlds."
+        ]
+      }
+    };
+
+    const contentEl = document.getElementById("hobby-content");
+    const buttons = document.querySelectorAll(".tab-button");
+
+    function renderHobby(key) {
+      const h = hobbies[key];
+      if (!h) return;
+      contentEl.innerHTML = `
+        <div class="hobby-title">${h.title}</div>
+        <div class="hobby-subtitle">${h.subtitle}</div>
+        <ul class="hobby-list">
+          ${h.points.map(p => `<li>${p}</li>`).join("")}
+        </ul>
+      `;
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        buttons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderHobby(btn.dataset.hobby);
+      });
+    });
+
+    // Initial content
+    renderHobby("climb");
+
+    // Year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
